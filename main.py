@@ -4,7 +4,6 @@ import time
 import random
 
 SIZE = 40
-BACKGROUND_COLOR = (108, 57, 145)
 
 class Apple:
     def __init__(self, surface):
