@@ -10,8 +10,8 @@ class Apple:
         self.parent_screen = surface
         self.apple = pygame.image.load(
             "Snake_Game/resources/apple.jpg").convert()
-        self.x = SIZE * 8
-        self.y = SIZE * 8
+        self.x = SIZE * random.randint(0, 20)
+        self.y = SIZE * random.randint(0, 10)
 
     def draw(self):
         self.parent_screen .blit(self.apple, (self.x, self.y))
@@ -86,6 +86,8 @@ class Game:
         self.apple = Apple(self.surface)
         self.apple.draw()
 
+        self.apple2 = Apple(self.surface)
+
         self.pause = False
 
     def render_bg(self):
@@ -98,11 +100,19 @@ class Game:
         self.apple.draw()
         self.display_score()
 
+        if self.snake.len > 5:
+            self.apple2.draw()
+
         # collision with apple
         if self.is_collision(self.snake.x[0], self.snake.y[0], self.apple.x, self.apple.y):
             pygame.mixer.Sound("Snake_Game/resources/1_snake_game_resources_ding.mp3").play()
             self.snake.ate_apple()
             self.apple.move()
+
+        if self.is_collision(self.snake.x[0], self.snake.y[0], self.apple2.x, self.apple2.y):
+            pygame.mixer.Sound("Snake_Game/resources/1_snake_game_resources_ding.mp3").play()
+            self.snake.ate_apple()
+            self.apple2.move()
 
         # collision with itself
         for i in range(1, self.snake.len):
@@ -155,6 +165,7 @@ class Game:
     def reset(self):
         self.snake = Snake(self.surface, 1)
         self.apple = Apple(self.surface)
+        self.apple2 = Apple(self.surface)
         pygame.mixer.music.unpause()
 
     def run(self):
@@ -184,7 +195,7 @@ class Game:
             if not self.pause:
                 self.play()
     
-            time.sleep(0.3)
+            time.sleep(0.1)
 
 
 if __name__ == "__main__":
